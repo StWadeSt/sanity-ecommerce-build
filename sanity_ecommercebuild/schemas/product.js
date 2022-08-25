@@ -36,5 +36,17 @@ export default {
             title: 'Details',
             type: 'string',
         },
+        {
+            name: 'reviews',
+            title: 'Reviews',
+            type: 'array',
+            of: [{type: 'string'}],
+        },
+        {
+            name: 'stars',
+            title: 'Stars',
+            type: 'array',
+            of: [{type: 'number'}],
+        }
     ],
 }

@@ -1,26 +1,37 @@
-import React from 'react'
+/* eslint-disable @next/next/no-img-element */
+import React, {useState} from 'react'
 import { urlFor, client } from '../../lib/client'
 import {AiOutlinePlus, AiOutlineMinus, AiFillStar, AiOutlineStar} from 'react-icons/ai'
 import Product from '../../components/Product'
+import { useStateContext } from '../../context/StateContext'
 
 const ProductDetails = ({product, products}) => {
     const {image, name, details, price} = product;
+    const [index, setIndex] = useState(0);
+    const { decreaseQty, increaseQty, qty} = useStateContext();
+
   return (
     <div>
         <div className='product-detail-container'>
             <div>
                 <div className='image-container'>
-                    <img alt='product-image' src={urlFor(image && image[0])}/>
+                    <img 
+                        alt='product-image' 
+                        src={urlFor(image && image[index])}
+                        className="product-detail-image"
+                    />
                 </div>
-                {/* <div className='small-images-container'>
-                    {image?.map((item) =>(
+                <div className='small-images-container'>
+                    {image?.map((item, i) =>(
                         <img 
+                            key={i}
+                            alt=""
                             src={urlFor(item)}
-                            className=""
-                            onMouseEnter=""
+                            className={i === index ? 'small-image selected-image' : 'small-image'}
+                            onMouseEnter={() => setIndex(i)}
                         />
                     ))}
-                </div> */}
+                </div>
             </div>
             <div className='product-detail-desc'>
                 <h1>{name}</h1>
@@ -36,13 +47,13 @@ const ProductDetails = ({product, products}) => {
                 </div>
                 <h4>Deatils: </h4>
                 <p>{details}</p>
-                <p className='price'>R{price}</p>
+                <p className='price'>R{price * qty}</p>
                 <div className='quantity'>
                     <h3>Quantity</h3>
                     <p className='quantity-desc'>
-                        <span className='minus' onClick=''><AiOutlineMinus /></span>
-                        <span className='num' onClick=''>0</span>
-                        <span className='plus' onClick=''><AiOutlinePlus /></span>
+                        <span className='minus' onClick={decreaseQty}><AiOutlineMinus /></span>
+                        <span className='num'>{qty}</span>
+                        <span className='plus' onClick={increaseQty}><AiOutlinePlus /></span>
                     </p>
                 </div>
                 <div className='buttons'>
